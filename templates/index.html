@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-qrcode"></i> QR Code Scanner</h1>
+            <p>Scan QR codes using your camera or upload an image</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Camera Section -->
+            <section class="camera-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-camera"></i> Camera Scanner</h2>
+                    <button id="startCamera" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Start Camera
+                    </button>
+                    <button id="stopCamera" class="btn btn-secondary" style="display: none;">
+                        <i class="fas fa-stop"></i> Stop Camera
+                    </button>
+                </div>
+                
+                <div class="camera-container">
+                    <video id="video" autoplay playsinline muted></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <div class="camera-overlay">
+                        <div class="scan-area">
+                            <div class="corner top-left"></div>
+                            <div class="corner top-right"></div>
+                            <div class="corner bottom-left"></div>
+                            <div class="corner bottom-right"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="camera-status">
+                    <span id="cameraStatus" class="status-text">Camera not started</span>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-upload"></i> Image Upload</h2>
+                </div>
+                
+                <div class="upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag and drop an image here or click to browse</p>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                        <button class="btn btn-outline" onclick="document.getElementById('fileInput').click()">
+                            Choose File
+                        </button>
+                    </div>
+                    
+                    <div class="preview-container" id="previewContainer" style="display: none;">
+                        <img id="imagePreview" alt="Preview">
+                        <button class="btn btn-primary" id="scanImage">
+                            <i class="fas fa-search"></i> Scan Image
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Scan Results</h2>
+                    <div>
+                        <button id="scanAnother" class="btn btn-primary" style="display:none;">
+                            <i class="fas fa-redo"></i> Scan Another
+                        </button>
+                        <button id="clearResults" class="btn btn-outline">
+                            <i class="fas fa-trash"></i> Clear
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="results-container" id="resultsContainer">
+                    <div class="no-results">
+                        <i class="fas fa-info-circle"></i>
+                        <p>No QR codes scanned yet. Use the camera or upload an image to get started.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Scanning...</p>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification" style="display: none;">
+            <span id="notificationMessage"></span>
+            <button class="notification-close" onclick="hideNotification()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+</body>
+</html> 
